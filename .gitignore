@@ -1,0 +1,11 @@
+# object or libraries
+*.[oa]
+
+# binary results
+*.so
+*.dll
+*.exe
+test
+
+# vim swap files
+*.swp
