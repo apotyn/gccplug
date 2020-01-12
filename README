@@ -1,0 +1,64 @@
+
+Personal GCC plugin collection
+==============================
+
+
+Compile time string hashing
+---------------------------
+
+The problem:
+Compile time computations are pretty new feature for C++ and does not supported
+for plain C. The *constexpr* qualifier/keyword does not give any guaranties to user
+that computations will be performed at the compile time. Actually this keyword 
+informs user that computations _may be performed_ at the compile time, or may be
+not performed because a lot of non-trivial reasons. To solve this problem C++20
+introduces *consteval* and *constinit* keywords. From the plain C side there is
+none changes to support it.
+So the compile time computing hash values for literal strings is stay messy nowadays.
+
+The idea:
+We can filter C/C++ sources right after preprocessing is done and substitute any
+hash function invocation from literal strings with its actual hash value.
+It implies to handle sources explicitely in three phases - preprocessing, filtering,
+and compilation, so it is not such effective, as the single call for compiler.
+
+The solution:
+We can hack gcc and introduce custom filtering pass with external plugin.
+
+
+Requirements
+------------
+
+- GNU make 4.2
+- gcc 8.3.x
+- g++ 8.3.x
+- Linux or UNIX-like OS
+
+
+Compiling
+---------
+
+Perform the followed command to build gcc plugin and test sample:
+$ make all
+
+Note:
+The versions form requirements section are tested. Compiling may fail (or may be success)
+for other toolchain versions.
+
+Compiling for MinGW or with MinGW on Windows is possible, but not supported
+currently.
+
+
+How to run gcc plugin
+---------------------
+
+-iplugindir=</path/to/plugins/directory>
+-fplugin=<path/to/plugin.ext>
+-fplugin-arg-name-<key1>[=value1]
+
+Query for default plugins directory:
+$ gcc -print-file-name=plugin
+
+
+vim: ts=4:tw=78:noet
+
